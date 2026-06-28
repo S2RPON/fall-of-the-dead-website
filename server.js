@@ -70,7 +70,7 @@ app.get('/roadmap', (req, res) => {
     res.render('roadmap', { phases: roadmapData });
 });
 
-// Auth: Register & Verify (Using 6-digit code)
+// Auth: Register
 app.get('/register', (req, res) => res.render('register'));
 
 app.post('/register', async (req, res) => {
@@ -87,20 +87,30 @@ app.post('/register', async (req, res) => {
             return res.render('register', { error: 'Username or Email already exists.' });
         }
         
+        // Try to send the email, but enforce an 8-second timeout
         try {
-            await transporter.sendMail({
+            const mailPromise = transporter.sendMail({
                 from: `"Fall Of The Dead" <${process.env.EMAIL_USER}>`,
                 to: email,
                 subject: 'Fall Of The Dead - Verification Code',
                 html: `<div style="background-color: #0a0b0d; color: #e0e0e0; padding: 30px; font-family: Arial, sans-serif; text-align: center;"><h1 style="color: #ffffff; letter-spacing: 2px; text-transform: uppercase;">Fall Of The Dead</h1><hr style="border-color: #333; margin: 20px 0;"><h2>Welcome, ${username}!</h2><p style="color: #aaa;">Use this 6-digit code to verify your account:</p><h1 style="color: #8b0000; font-size: 40px; letter-spacing: 10px;">${verifyCode}</h1></div>`
             });
+            
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Email timeout')), 8000)
+            );
+
+            await Promise.race([mailPromise, timeoutPromise]);
+            
+            // If email sends successfully, go to verify page
+            res.render('verify', { email, error: null, fallbackCode: null });
         } catch (mailErr) {
-            console.log(`FALLBACK CODE FOR ${username}: ${verifyCode}`);
+            // If email fails OR takes longer than 8 seconds, give the code on screen
+            console.error('Email failed or timed out:', mailErr.message);
             return res.render('verify', { email, error: null, fallbackCode: verifyCode });
         }
-
-        res.render('verify', { email, error: null, fallbackCode: null });
     } catch (err) {
+        console.error(err);
         res.render('register', { error: 'An unexpected error occurred.' });
     }
 });
