@@ -1,0 +1,23 @@
+<%- include('partials/header') %>
+
+<div class="container roadmap-container">
+    <h1 class="page-title">Development Roadmap</h1>
+    <div class="timeline">
+        <% phases.forEach(phase => { %>
+            <div class="phase">
+                <div class="phase-node"></div>
+                <h2 class="phase-title"><%= phase.title %></h2>
+                <div class="features-grid">
+                    <% phase.features.forEach(feature => { %>
+                        <div class="feature-card glass-card">
+                            <span><%= feature.title %></span>
+                            <span class="status-badge status-<%= feature.status.toLowerCase().replace(/\s+/g, '-') %>"><%= feature.status %></span>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,27 @@
+<%- include('partials/header') %>
+
+<div class="auth-container">
+    <div class="auth-box glass-card">
+        <h2>Verify Survivor</h2>
+        
+        <% if (locals.error) { %>
+            <p class="error-msg"><%= error %></p>
+        <% } %>
+
+        <% if (locals.fallbackCode) { %>
+            <p style="color: #ffa500; margin-bottom: 1rem; font-weight: 700; text-align: center;">
+                Email failed to send. Use this code for testing: <%= fallbackCode %>
+            </p>
+        <% } %>
+
+        <p style="margin-bottom: 1rem; text-align: center; color: #aaa;">Enter the 6-digit code sent to your email.</p>
+        
+        <form action="/verify" method="POST">
+            <input type="hidden" name="email" value="<%= email %>" required>
+            <input type="text" name="code" placeholder="6-Digit Code" maxlength="6" required style="text-align: center; font-size: 1.5rem; letter-spacing: 5px;">
+            <button type="submit" class="btn btn-primary">Verify Account</button>
+        </form>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

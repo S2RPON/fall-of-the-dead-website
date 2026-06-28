@@ -1,0 +1,46 @@
+<%- include('partials/header') %>
+
+<div class="container admin-container">
+    <h1 class="page-title">Admin Dashboard</h1>
+
+    <div class="admin-section glass-card">
+        <h3>Roadmap Management</h3>
+        <div class="admin-list">
+            <% roadmap.forEach(feature => { %>
+                <form action="/admin/roadmap/update" method="POST" class="admin-row">
+                    <span><%= feature.title %></span>
+                    <input type="hidden" name="featureId" value="<%= feature.id %>">
+                    <select name="status">
+                        <option value="Planned" <%= feature.status === 'Planned' ? 'selected' : '' %>>Planned</option>
+                        <option value="In Development" <%= feature.status === 'In Development' ? 'selected' : '' %>>In Development</option>
+                        <option value="Completed" <%= feature.status === 'Completed' ? 'selected' : '' %>>Completed</option>
+                    </select>
+                    <button type="submit" class="btn btn-small">Update</button>
+                </form>
+            <% }) %>
+        </div>
+    </div>
+
+    <div class="admin-section glass-card">
+        <h3>Support Tickets</h3>
+        <div class="admin-list">
+            <% tickets.forEach(ticket => { %>
+                <div class="admin-row" style="flex-direction: column; align-items: flex-start;">
+                    <span><strong><%= ticket.subject %></strong> (Status: <%= ticket.status %>)</span>
+                    <p><%= ticket.description %></p>
+                    <% if (ticket.status === 'Open') { %>
+                        <form action="/admin/ticket/reply" method="POST">
+                            <input type="hidden" name="ticketId" value="<%= ticket.id %>">
+                            <input type="text" name="admin_reply" placeholder="Type reply..." required>
+                            <button type="submit" class="btn btn-small">Reply & Solve</button>
+                        </form>
+                    <% } else { %>
+                        <p><em>Replied: <%= ticket.admin_reply %></em></p>
+                    <% } %>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

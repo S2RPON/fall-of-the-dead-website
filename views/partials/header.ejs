@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fall Of The Dead</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="cursor-dot"></div>
+    <div id="scroll-progress"></div>
+
+    <nav class="glass-nav">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <span class="logo-main">FALL</span> <span class="logo-sub">OF THE DEAD</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/roadmap">Roadmap</a></li>
+                <li><a href="https://discord.com" target="_blank">Discord</a></li>
+                <% if (locals.user) { %>
+                    <li><a href="/support">Support</a></li>
+                    <% if (user.role === 'admin') { %><li><a href="/admin" class="admin-link">Admin</a></li><% } %>
+                    <li><a href="/logout" class="btn-nav-logout">Logout (<%= user.username %>)</a></li>
+                <% } else { %>
+                    <li><a href="/login" class="btn-nav-login">Login</a></li>
+                    <li><a href="/register" class="btn-nav-register">Register</a></li>
+                <% } %>
+            </ul>
+        </div>
+    </nav>

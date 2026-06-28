@@ -1,0 +1,88 @@
+<%- include('partials/header') %>
+
+<section class="hero">
+    <div class="hero-overlay">
+        <h1 class="hero-title">FALL OF THE DEAD</h1>
+        <p class="hero-desc">The infection didn't just kill the world; it awoke it. Survive the ruins, scavenge the forgotten, and outlast the horde.</p>
+        <div class="hero-actions">
+            <!-- Added type="button" to stop flicking/reloading -->
+            <button type="button" id="wishlistBtn" class="btn btn-primary">
+                <% if (isWishlisted) { %> Wishlisted ✓ <% } else { %> Wishlist <% } %> <span id="wishlistCount">(<%= wishlistCount %>)</span>
+            </button>
+            <a href="https://discord.com" target="_blank" class="btn btn-secondary">Join Discord</a>
+            <a href="#roadmap" class="btn btn-ghost">View Roadmap</a>
+            <a href="/support" class="btn btn-ghost">Support</a>
+        </div>
+    </div>
+    
+    <div class="scroll-indicator">
+        <div class="scroll-mouse"><div class="scroll-dot"></div></div>
+        <span>SCROLL</span>
+    </div>
+</section>
+
+<div class="content-wrapper">
+    <section class="container news-section">
+        <h2 class="section-title">Latest Dev Updates</h2>
+        <div class="cards-grid">
+            <% news.forEach(article => { %>
+                <div class="card glass-card">
+                    <div class="card-body">
+                        <span class="card-date"><%= new Date(article.created_at).toLocaleDateString() %></span>
+                        <h3><%= article.title %></h3>
+                        <p><%= article.content.substring(0, 200) %>...</p>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </section>
+
+    <section class="container perf-section">
+        <h2 class="section-title">System Performance Check</h2>
+        <div class="perf-checker glass-card">
+            <p>Click below to estimate your hardware's capability to run Fall Of The Dead. (Estimate only, not actual FPS).</p>
+            <button type="button" id="checkSpecsBtn" class="btn btn-secondary">Check My Specs</button>
+            <div id="perfResult" class="perf-result"></div>
+        </div>
+    </section>
+
+    <section class="container roadmap-container" id="roadmap">
+        <h2 class="section-title">Development Roadmap</h2>
+        <div class="timeline">
+            <% phases.forEach(phase => { %>
+                <div class="phase">
+                    <div class="phase-node"></div>
+                    <h2 class="phase-title"><%= phase.title %></h2>
+                    <div class="features-grid">
+                        <% phase.features.forEach(feature => { %>
+                            <div class="feature-card glass-card">
+                                <span><%= feature.title %></span>
+                                <span class="status-badge status-<%= feature.status.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') %>"><%= feature.status %></span>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </section>
+
+    <section class="container team-section">
+        <h2 class="section-title">The Survivors Behind The Screen</h2>
+        <div class="team-grid">
+            <div class="team-card glass-card">
+                <h3>Ch</h3>
+                <span class="real-name">Yassine Makhlouf</span>
+                <span class="role">Lead Game Developer</span>
+                <p>Building the world, mechanics, and core survival systems from the ground up. Turning the vision of the wasteland into a playable reality.</p>
+            </div>
+            <div class="team-card glass-card">
+                <h3>Poe2</h3>
+                <span class="real-name">Brahim Dachraoui</span>
+                <span class="role">Huge Helper & Production Support</span>
+                <p>A massive pillar of support for the project. Assisting with organization, community, and keeping the development process on track every step of the way.</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<%- include('partials/footer') %>
